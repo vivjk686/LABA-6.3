@@ -1,31 +1,37 @@
+// LABA-6.3.cpp
+// Шах Владислав Ігорьович
+// Лабораторна робота № 6.3
+// Опрацювання одновимірних масивів за допомогою звичайних функцій та шаблонів
+// Варіант 32 (Рекурсивний спосіб)
+
 #include <iostream>
 #include <iomanip>
 #include <time.h>
 
 using namespace std;
 
-// Прототипи звичайних функцій
+// Прототипи функцій (звичайні функції для типу int)
 void Create(int* a, const int size, const int Low, const int High, int i);
-void Print(int* a, const int size, int i);
-int Min(int* a, const int size, int i, int min);
-int Min(int* a, const int size);
+void Print(const int* a, const int size, int i);
+int Min(const int* a, const int size, int i, int min);
+int Min(const int* a, const int size);
 
-// Прототипи шаблонних функцій
+// Прототипи шаблонів функцій
 template <typename T>
 void Create(T* a, const int size, const T Low, const T High, int i);
 
 template <typename T>
-void Print(T* a, const int size, int i);
+void Print(const T* a, const int size, int i);
 
 template <typename T>
-T Min(T* a, const int size, int i, T min);
+T Min(const T* a, const int size, int i, T min);
 
 template <typename T>
-T Min(T* a, const int size);
+T Min(const T* a, const int size);
 
-// --- Реалізація звичайних функцій (для int) ---
+// --- 1. Реалізація звичайних функцій (тип int) ---
 
-// Рекурсивне формування масиву
+// Рекурсивне формування масиву випадковими числами
 void Create(int* a, const int size, const int Low, const int High, int i)
 {
     a[i] = Low + rand() % (High - Low + 1);
@@ -33,8 +39,8 @@ void Create(int* a, const int size, const int Low, const int High, int i)
         Create(a, size, Low, High, i + 1);
 }
 
-// Рекурсивне виведення масиву
-void Print(int* a, const int size, int i)
+// Рекурсивне виведення елементів масиву
+void Print(const int* a, const int size, int i)
 {
     cout << setw(5) << a[i];
     if (i < size - 1)
@@ -43,8 +49,8 @@ void Print(int* a, const int size, int i)
         cout << endl;
 }
 
-// Рекурсивний пошук найменшого елемента (Варіант 32)
-int Min(int* a, const int size, int i, int min)
+// Рекурсивний пошук мінімального елемента масиву (Варіант 32)
+int Min(const int* a, const int size, int i, int min)
 {
     if (i >= size)
         return min;
@@ -56,15 +62,17 @@ int Min(int* a, const int size, int i, int min)
         return min;
 }
 
-// Допоміжна перевантажена функція для зручного виклику
-int Min(int* a, const int size)
+// Допоміжна функція пошуку мінімального елемента
+int Min(const int* a, const int size)
 {
+    if (size <= 0)
+        return 0;
     return Min(a, size, 1, a[0]);
 }
 
-// --- Реалізація шаблонних функцій ---
+// --- 2. Реалізація шаблонів функцій ---
 
-// Рекурсивне формування масиву через шаблон
+// Рекурсивне формування масиву для шаблону
 template <typename T>
 void Create(T* a, const int size, const T Low, const T High, int i)
 {
@@ -73,9 +81,9 @@ void Create(T* a, const int size, const T Low, const T High, int i)
         Create<T>(a, size, Low, High, i + 1);
 }
 
-// Рекурсивне виведення масиву через шаблон
+// Рекурсивне виведення масиву для шаблону
 template <typename T>
-void Print(T* a, const int size, int i)
+void Print(const T* a, const int size, int i)
 {
     cout << setw(7) << setprecision(2) << fixed << a[i];
     if (i < size - 1)
@@ -84,9 +92,9 @@ void Print(T* a, const int size, int i)
         cout << endl;
 }
 
-// Рекурсивний пошук найменшого елемента через шаблон (Варіант 32)
+// Рекурсивний пошук найменшого елемента для шаблону (Варіант 32)
 template <typename T>
-T Min(T* a, const int size, int i, T min)
+T Min(const T* a, const int size, int i, T min)
 {
     if (i >= size)
         return min;
@@ -98,10 +106,12 @@ T Min(T* a, const int size, int i, T min)
         return min;
 }
 
-// Допоміжна перевантажена шаблонна функція
+// Допоміжна функція пошуку найменшого елемента для шаблону
 template <typename T>
-T Min(T* a, const int size)
+T Min(const T* a, const int size)
 {
+    if (size <= 0)
+        return T();
     return Min<T>(a, size, 1, a[0]);
 }
 
@@ -120,11 +130,11 @@ int main()
     cout << "Masiv a:" << endl;
     Print(a, n, 0);
 
-    int minInt = Min(a, n, 1, a[0]);
+    int minInt = Min(a, n);
     cout << "Min(a, n) = " << minInt << endl << endl;
 
     cout << "--- 2. Shabloni funktsiy ---" << endl;
-    cout << "Min<int>(a, n) = " << Min<int>(a, n, 1, a[0]) << endl;
+    cout << "Min<int>(a, n) = " << Min<int>(a, n) << endl;
 
     double b[n];
     double dLow = -15.5, dHigh = 25.5;
@@ -132,7 +142,7 @@ int main()
     cout << "Masiv b (double):" << endl;
     Print<double>(b, n, 0);
 
-    double minDouble = Min<double>(b, n, 1, b[0]);
+    double minDouble = Min<double>(b, n);
     cout << "Min<double>(b, n) = " << minDouble << endl;
 
     return 0;
