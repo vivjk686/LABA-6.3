@@ -10,10 +10,8 @@
 
 using namespace std;
 
-// =========================================================================
 // 1. Прототипи звичайних функцій (для типу int)
-// =========================================================================
-
+// 
 // Формування масиву випадковими числами (окрема функція)
 void Create(int* a, const int size, const int Low, const int High, int i);
 
@@ -25,9 +23,7 @@ int Min(const int* a, const int size, int i);
 int Min(const int* a, const int size);
 int Min(const int* a, const int size, int i, int min);
 
-// =========================================================================
 // 2. Прототипи шаблонів функцій (для довільних типів даних)
-// =========================================================================
 
 // Шаблон функції формування масиву (окрема функція)
 template <typename T>
@@ -42,14 +38,12 @@ template <typename T>
 T Min(const T* a, const int size, int i);
 
 template <typename T>
-T Min(const T* a, const int size);
+T Min(const T* a, const int size); 
 
 template <typename T>
 T Min(const T* a, const int size, int i, T min);
 
-// =========================================================================
 // 3. Реалізація звичайних функцій (тип int)
-// =========================================================================
 
 // Рекурсивне формування масиву випадковими цілими числами
 void Create(int* a, const int size, const int Low, const int High, int i)
